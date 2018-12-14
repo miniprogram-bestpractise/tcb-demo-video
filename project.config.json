@@ -1,0 +1,86 @@
+{
+	"miniprogramRoot": "client/",
+	"cloudfunctionRoot": "cloud/functions/",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true,
+		"nodeModules": true
+	},
+	"appid": "",
+	"projectname": "tcb-demo-video",
+	"libVersion": "2.4.1",
+	"compileType": "miniprogram",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 7,
+			"list": [
+				{
+					"id": -1,
+					"name": "用户管理",
+					"pathName": "pages/user/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "微信支付",
+					"pathName": "pages/pay-list/index",
+					"query": ""
+				},
+				{
+					"id": 2,
+					"name": "订单列表",
+					"pathName": "pages/pay-order/index",
+					"query": ""
+				},
+				{
+					"id": 3,
+					"name": "订单详情",
+					"pathName": "pages/pay-result/index",
+					"query": "id=goods_4-1541683061235"
+				},
+				{
+					"id": -1,
+					"name": "模板消息",
+					"pathName": "pages/reserve/index",
+					"query": ""
+				},
+				{
+					"id": 5,
+					"name": "音视频创建房间",
+					"pathName": "pages/webrtc-room/join-room/index",
+					"query": ""
+				},
+				{
+					"id": 6,
+					"name": "音视频functions",
+					"pathName": "pages/webrtc-room-cloudfuns/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "音视频房间列表",
+					"pathName": "pages/webrtc-room/room-list/index",
+					"query": ""
+				}
+			]
+		}
+	}
+}

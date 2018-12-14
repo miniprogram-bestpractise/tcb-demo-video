@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/webrtc-room/room-list/index",
+    "pages/webrtc-room/join-room/index",
+    "pages/webrtc-room/room/index",
+    "pages/webrtc-room-cloudfuns/index"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "云开发可视通话",
+    "navigationBarTextStyle": "black"
+  },
+  "cloud": true
+}
