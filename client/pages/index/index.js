@@ -12,10 +12,10 @@ Page({
         id: 'webrtc-room/room-list',
         name: '房间列表',
       },
-      {
-        id: 'webrtc-room-cloudfuns',
-        name: '实时音视频云函数'
-      }
+      // {
+      //   id: 'webrtc-room-cloudfuns',
+      //   name: '实时音视频云函数'
+      // }
     ]
   },
 

@@ -169,7 +169,7 @@ Page({
       roomName: self.data.roomName
     },
     function (res) {
-      console.log('进入房间', res)
+      // console.log('进入房间', res)
       self.setData({
         roomID: res.roomInfo.roomID,
         userID: res.signInfo.userID,
