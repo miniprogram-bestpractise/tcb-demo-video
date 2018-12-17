@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "WebRTC视频通话",
   "usingComponents": {
-    "webrtc-room": "/pages/components/webrtc-room/webrtc-room",
-    "sketchpad": "/pages/components/sketchpad/sketchpad"
+    "webrtc-room": "/pages/components/webrtc-room/webrtc-room"
   }
 }
