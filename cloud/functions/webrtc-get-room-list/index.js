@@ -17,14 +17,6 @@ exports.main = async (event, context) => {
     .skip(event.skip || 0)
     .limit(event.limit || 10)
     .get()
-    .then(res => {
-      // console.log(res)
-      return res
-    })
-    .catch(err => {
-      // console.error(err)
-      return err
-    })
-
+    
   return result
 }

@@ -76,12 +76,10 @@ var webrtcroom = {
           userID
         }
       });
-      
-      if (result.userID) {
-        success(result);
-      }
-      else {
-        fail();
+      if (result && !result.code) {
+        success && success(result);
+      } else {
+        fail && fail(result);
       }
     }
     catch (e) {
@@ -95,15 +93,14 @@ var webrtcroom = {
         name: 'webrtc-get-room-list',
         data: {
           skip: index,
-          limit: count          
+          limit: count
         }
       });
-
-      if (result) {
-        success(result);
-      }
-      else {
-        fail();
+      
+      if (result && !result.code) {
+        success && success(result);
+      } else {
+        fail && fail(result);
       }
     }
     catch (e) {
@@ -128,12 +125,10 @@ var webrtcroom = {
           ...params
         }
       });
-
-      if (result) {
+      if (result && !result.code) {
         success && success(result);
-      }
-      else {
-        fail && fail();
+      } else {
+        fail && fail(result);
       }
     }
     catch (e) {
@@ -150,11 +145,10 @@ var webrtcroom = {
           userID
         }
       });
-      if (result) {
-        console.log(result)
+      if (result && !result.code) {
         success && success(result);
       } else {
-        fail && fail();
+        fail && fail(result);
       }
     }
     catch (e) {

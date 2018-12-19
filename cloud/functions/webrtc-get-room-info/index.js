@@ -16,17 +16,10 @@ exports.main = async (event, context) => {
       roomID: event.roomID
     })
     .get()
-    .then(res => {
-      console.log(res)
-      if (res.data.length > 0){
-        res.roomInfo = res.data[0]
-      }
-      return res
-    })
-    .catch(err => {
-      console.error(err)
-      return err
-    })
+
+  if (result.data && result.data.length > 0) {
+    result.roomInfo = result.data[0]
+  }
 
   return result
   

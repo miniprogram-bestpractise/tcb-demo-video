@@ -14,33 +14,19 @@ function generateRoomID() {
 }
 // 需检查该 roomid 是否存在
 async function isRoomExist(roomID) {
-  let _res = []
-  await webrtcRoomsCollection.where({
-    roomID: roomID
-  })
-    .get()
-    .then(res => {
-      console.log('查询: ', res.data)
-      _res = res.data
+  let {data} = await webrtcRoomsCollection.where({
+      roomID: roomID
     })
-  return _res.length > 0 ? true : false
-}
-
-// 房间信息
-let _roomInfo = {
-  creator: '', // 创建者ID
-  roomID: '', // 房间id
-  name: '', // 房间名
-  type: '', // 房间类型
-  privateMapKey: '', // 权限位
-  members: []
+    .get()
+  console.log('查询', data)
+  return data.length > 0 ? true : false
 }
 
 // 云函数入口函数 
 /**
  * 创建房间 返回privateMapKey 并启动webrtc-room 组件进入房间
- * @param event.name 房间名称
- * @description roomID 随机生成
+ * @param event.roomName 房间名称
+ * @description roomID 可以随机生成
  */
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
@@ -50,47 +36,29 @@ exports.main = async (event, context) => {
     roomID: event.roomID || generateRoomID(),
     roomName: event.roomName,
     members: [],
-    privateMapKey: '',
     createTime: new Date()
   }
 
-  // 查询数据库 检查房间号是否存在，生成有效的roomID
-  // await isRoomExist(roomInfo.roomID)
+  // 循环检查数据，避免 generateRoomID 生成重复的roomID
   while (await isRoomExist(roomInfo.roomID)) {
     roomInfo.roomID = generateRoomID()
   }
 
-  // 获取凭证
-  // const signInfo = await cloud.callFunction({
-  //   name: 'webrtc-sig-api',
-  //   data: {
-  //     userID: roomInfo.creator,
-  //     roomID: roomInfo.roomID
-  //   }
-  // });
-  // console.log('signInfo', signInfo)
-  // roomInfo.privateMapKey = signInfo.result.privateMapKey
-
+  // if (await isRoomExist(roomInfo.roomID)) {
+  //   // 如果这时生成的roomID是重复，将会出现两个roomID一样的记录，需要再次查询所以上面的逻辑用循环查询
+  //   roomInfo.roomID = generateRoomID()
+  // }
   
+
   if (roomInfo.creator) {
-    console.log('roomInfo.creator', roomInfo.creator)
     roomInfo.members.push(roomInfo.creator)
   }
 
   // 将房间信息写入数据库
-  console.log('roomInfo', roomInfo)
   let result = await webrtcRoomsCollection.add({
     data: roomInfo
   })
-    .then(res => {
-      console.log(res)
-      return res
-    })
-    .catch(err => {
-      console.error(err)
-      return err
-    })
 
+  console.log('roomInfo', roomInfo, result)
   return roomInfo
-
 }

@@ -8,24 +8,21 @@ const webrtcRoomsCollection = db.collection('webrtcRooms')
 const _ = db.command
 
 const config = {
-  maxMembers: 4,
+  maxMembers: 4, // 单个房间最大人数
   heartBeatTimeout: 20
 }
-
 
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  /**
-   * 进入房间
-   * 查询 roomID
-   * 存在则进入
-   * 不存在则创建
-   **/
-  let userID = event.userID || wxContext.OPENID
-  let roomInfo = {}
-  let response = {}
 
+  let userID = event.userID || wxContext.OPENID
+  let response = {}
+  if (event.roomID && !/^[0-9]{1,11}$/.test(event.roomID)) {
+    response.code = '12'
+    response.msg = 'roomID数值必须是int型'
+    return response
+  }
   // 查询房间是否存在
   let {result: roomData} = await cloud.callFunction({
     name: 'webrtc-get-room-info',
@@ -36,7 +33,7 @@ exports.main = async (event, context) => {
   console.log(roomData, userID)
   if (roomData.roomInfo) {
     // enter 进入房间，增加房间成员
-    roomInfo = roomData.roomInfo
+    let roomInfo = roomData.roomInfo
     if (roomInfo.members.length < config.maxMembers) {
       if (roomInfo.members.indexOf(userID) == -1){
         roomInfo.members.push(userID)
@@ -46,18 +43,14 @@ exports.main = async (event, context) => {
           members: roomInfo.members
         }
       })
-        .then(res => {
-          console.log(res)
-          return res
-        })
-        .catch(err => {
-          console.error(err)
-          return err
-        })
+      response.roomInfo = roomInfo
+      response.msg = 'enter'
     } else {
       // 房间已满 5001
+      response.code = '5001'
+      response.msg = '超出房间人数上限'
+      return response
     }
-    
   } else {
     // create 当前用户成为创建者
     let { result: createRoomData } = await cloud.callFunction({
@@ -68,8 +61,7 @@ exports.main = async (event, context) => {
         roomName: event.roomName
       }
     });
-    console.log(createRoomData)
-    roomInfo = createRoomData
+    response.roomInfo = createRoomData
     response.msg = 'create'
   }
 
@@ -78,15 +70,11 @@ exports.main = async (event, context) => {
     name: 'webrtc-sig-api',
     data: {
       userID: userID,
-      roomID: roomInfo.roomID
+      roomID: response.roomInfo.roomID
     }
-  });
-  console.log(signInfo)
+  })
+  response.signInfo = signInfo
+  console.log(response)
   
-  // 严格上需要通过webrtc-room组件进入房间成功后，才能写入房间信息
-  
-  return {
-    roomInfo,
-    signInfo
-  }
+  return response
 }
