@@ -45,7 +45,7 @@ exports.main = async (event, context) => {
   }
 
   // if (await isRoomExist(roomInfo.roomID)) {
-  //   // 如果这时生成的roomID是重复，将会出现两个roomID一样的记录，需要再次查询所以上面的逻辑用循环查询
+  //   // 如果这时生成的roomID是重复的，将会出现两个roomID一样的记录，所以需要再次查询，即上面的逻辑用循环查询
   //   roomInfo.roomID = generateRoomID()
   // }
   
