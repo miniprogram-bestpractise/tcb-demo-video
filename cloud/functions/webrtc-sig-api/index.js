@@ -23,25 +23,43 @@ exports.main = async (event, context) => {
   
   // private_key 不能被下载
   let privateKey = config.privateKey;
-  console.log('privateKey: ' + privateKey)
+  console.log(`privateKey: ${privateKey}`)
 
   event.userID = (!event.userID) ? wxContext.OPENID : event.userID
   event.sdkAppID = (!event.sdkAppID) ? config.sdkAppID : event.sdkAppID
   event.accountType = (!event.accountType) ? config.accountType : event.accountType
   
-  let res = {
-    ...event
+  let response = {
+    code: 0,
+    message: 'success',
+    data: {
+      ...event
+    }
   }
 
   if (event.roomID) {
-    let privateMapKey = genPrivateMapKey(event.userID, event.sdkAppID, event.accountType, event.roomID, privateKey)
-    console.log('privateMapKey: ' + privateMapKey)
-    res.privateMapKey = gzcompressSync(privateMapKey)
+    let privateMapKey = genPrivateMapKey({
+      userID: event.userID, 
+      sdkAppID: event.sdkAppID, 
+      accountType: event.accountType, 
+      roomID: event.roomID, 
+      priKey: privateKey
+    })
+  
+    console.log(`privateMapKey: ${privateMapKey}`)
+    response.data.privateMapKey = gzcompressSync(privateMapKey)
   }
 
-  let userSig = genUserSig(event.userID, event.sdkAppID, event.accountType, privateKey)
-  console.log('userSig: ' + userSig)
-  res.userSig = gzcompressSync(userSig)
-  console.log('res.userSig: ' + res.userSig)
-  return res
+  let userSig = genUserSig({
+    userID: event.userID, 
+    sdkAppID: event.sdkAppID, 
+    accountType: event.accountType, 
+    priKey: privateKey
+  })
+  console.log(`userSig: ${userSig}`)
+  
+  response.data.userSig = gzcompressSync(userSig)
+  console.log(`response.userSig: ${response.userSig}`)
+
+  return response
 }

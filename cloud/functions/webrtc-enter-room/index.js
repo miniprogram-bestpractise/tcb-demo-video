@@ -4,12 +4,11 @@ const cloud = require('wx-server-sdk')
 cloud.init()
 
 const db = cloud.database()
-const webrtcRoomsCollection = db.collection('webrtcRooms')
+const roomsCollection = db.collection('webrtcRooms')
 const _ = db.command
 
 const config = {
-  maxMembers: 4, // 单个房间最大人数
-  heartBeatTimeout: 20
+  maxMembers: 2, // 单个房间最大人数
 }
 
 // 云函数入口函数
@@ -17,41 +16,49 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
 
   let userID = event.userID || wxContext.OPENID
-  let response = {}
+  let response = {
+    data: {}
+  }
+  
   if (event.roomID && !/^[0-9]{1,11}$/.test(event.roomID)) {
-    response.code = '12'
-    response.msg = 'roomID数值必须是int型'
+    response.code = '10002'
+    response.message = 'roomID数值必须是整数'
     return response
   }
+
   // 查询房间是否存在
-  let {result: roomData} = await cloud.callFunction({
+  let { result: roomData } = await cloud.callFunction({
     name: 'webrtc-get-room-info',
     data: {
       roomID: event.roomID
     }
-  });
+  })
+
   console.log(roomData, userID)
-  if (roomData.roomInfo) {
+
+  if (roomData.data) {
     // enter 进入房间，增加房间成员
-    let roomInfo = roomData.roomInfo
+    let roomInfo = roomData.data
+    
     if (roomInfo.members.length < config.maxMembers) {
       if (roomInfo.members.indexOf(userID) == -1){
         roomInfo.members.push(userID)
       }
-      await webrtcRoomsCollection.doc(roomInfo._id).update({
+      await roomsCollection.doc(roomInfo._id).update({
         data: {
           members: roomInfo.members
         }
       })
-      response.roomInfo = roomInfo
-      response.msg = 'enter'
+      response.data.roomInfo = roomInfo
+      response.message = 'enter success'
     } else {
       // 房间已满 5001
-      response.code = '5001'
-      response.msg = '超出房间人数上限'
+      response.code = '10005'
+      response.message = '超出房间人数上限'
       return response
     }
-  } else {
+  }
+  else {
     // create 当前用户成为创建者
     let { result: createRoomData } = await cloud.callFunction({
       name: 'webrtc-create-room',
@@ -61,8 +68,8 @@ exports.main = async (event, context) => {
         roomName: event.roomName
       }
     });
-    response.roomInfo = createRoomData
-    response.msg = 'create'
+    response.data.roomInfo = createRoomData.data
+    response.message = 'create success'
   }
 
   // 计算凭证，返回到小程序端
@@ -70,11 +77,10 @@ exports.main = async (event, context) => {
     name: 'webrtc-sig-api',
     data: {
       userID: userID,
-      roomID: response.roomInfo.roomID
+      roomID: response.data.roomInfo.roomID
     }
   })
-  response.signInfo = signInfo
-  console.log(response)
+  response.data.signInfo = signInfo.data || {}
   
   return response
 }

@@ -4,7 +4,7 @@ const cloud = require('wx-server-sdk')
 cloud.init()
 
 const db = cloud.database()
-const webrtcRoomsCollection = db.collection('webrtcRooms')
+const roomsCollection = db.collection('liveRooms')
 const _ = db.command
 
 function deleteMember(roomInfo, userID) {
@@ -26,13 +26,13 @@ exports.main = async (event, context) => {
     data: {}
   }
 
-  if (!event.userID || !event.roomID) {
+  if (!event.roomID) {
     response.code = 10001
     response.message = '请求失败，缺少参数'
     return response
   }
   let { result } = await cloud.callFunction({
-    name: 'webrtc-get-room-info',
+    name: 'liveroom-get-room-info',
     data: {
       roomID: event.roomID
     }
@@ -48,19 +48,20 @@ exports.main = async (event, context) => {
   }
 
   // 删除成员
-  deleteMember(roomInfo, event.userID)
-  
-  if (roomInfo.members.length === 0) {
+  deleteMember(roomInfo, wxContext.OPENID)
+
+  if (roomInfo.members.length === 0 || roomInfo.creator === wxContext.OPENID) {
     // 成员为0，删除房间
-    status = await webrtcRoomsCollection.doc(roomInfo._id).remove()
+    res = await roomsCollection.doc(roomInfo._id).remove()
   } else {
     // 更新房间成员
-    status = await webrtcRoomsCollection.doc(roomInfo._id).update({
+    res = await roomsCollection.doc(roomInfo._id).update({
       data: {
         members: roomInfo.members
       }
     })
   }
+  
   response.data = roomInfo
   response.data.status = status
 

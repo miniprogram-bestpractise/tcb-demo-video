@@ -1,7 +1,10 @@
 <!--index.wxml-->
 <view class="index">
   <view class="index-hd">
-    <image class="index-logo" src="/resources/tencentcloud.png"></image>
+    <image
+      class="index-logo"      
+      src="//main.qcloudimg.com/raw/8a8f68dc1bbca344ce4046d52aea89ee.png"
+    ></image>
     <view class="index-desc">以下将演示基于小程序·云开发所研发的音视频解决方案</view>
   </view>
   <view class="index-bd">

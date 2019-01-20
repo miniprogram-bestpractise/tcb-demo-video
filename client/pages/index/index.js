@@ -5,24 +5,24 @@ Page({
   data: {
     list: [
       {
-        id: 'webrtc-room/join-room',
-        name: '视频通话',
+        id: 'webrtc-room/room-list',
+        name: '视频客服',
       },
       {
-        id: 'webrtc-room/room-list',
-        name: '房间列表',
+        id: 'live-room/room-list',
+        name: '手机直播'
       },
-      // {
-      //   id: 'webrtc-room-cloudfuns',
-      //   name: '实时音视频云函数'
-      // }
+      {
+        id: 'functions',
+        name: '云函数调试'
+      }
     ]
   },
 
   // 分享
   onShareAppMessage() {
     return {
-      title: '小程序·云开发体验',
+      title: '小程序·云开发音视频解决方案',
       path: '/pages/index/index',
     }
   },

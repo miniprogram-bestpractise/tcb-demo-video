@@ -11,7 +11,7 @@
 	},
 	"appid": "wx5a9f6a2c25353607",
 	"projectname": "tcb-demo-video",
-	"libVersion": "2.4.2",
+	"libVersion": "2.5.0",
 	"compileType": "miniprogram",
 	"condition": {
 		"search": {
@@ -30,38 +30,8 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 7,
+			"current": 3,
 			"list": [
-				{
-					"id": -1,
-					"name": "用户管理",
-					"pathName": "pages/user/index",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "微信支付",
-					"pathName": "pages/pay-list/index",
-					"query": ""
-				},
-				{
-					"id": 2,
-					"name": "订单列表",
-					"pathName": "pages/pay-order/index",
-					"query": ""
-				},
-				{
-					"id": 3,
-					"name": "订单详情",
-					"pathName": "pages/pay-result/index",
-					"query": "id=goods_4-1541683061235"
-				},
-				{
-					"id": -1,
-					"name": "模板消息",
-					"pathName": "pages/reserve/index",
-					"query": ""
-				},
 				{
 					"id": 5,
 					"name": "音视频创建房间",
@@ -69,16 +39,23 @@
 					"query": ""
 				},
 				{
-					"id": 6,
-					"name": "音视频functions",
-					"pathName": "pages/webrtc-room-cloudfuns/index",
-					"query": ""
-				},
-				{
 					"id": -1,
 					"name": "音视频房间列表",
 					"pathName": "pages/webrtc-room/room-list/index",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "手机直播房间列表",
+					"pathName": "pages/live-room/room-list/index",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "云函数调试",
+					"pathName": "pages/functions/index",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

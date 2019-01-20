@@ -1,4 +1,6 @@
-var webrtcroom = require('../../../utils/webrtcroom.js');
+// eslint-disable-next-line no-unused-vars
+const regeneratorRuntime = require('../../../libs/runtime.js')
+let webrtcroom = require('../../../libs/webrtcroom.js');
 
 Page({
 
@@ -6,53 +8,62 @@ Page({
 	 * 页面的初始数据
 	 */
   data: {
-    roomName: '',
     roomList: [],
-    userName: '',
-    firstshow: true, // 第一次显示页面
     tapTime: '',
     tapJoinRoom: false
   },
 
   // 拉取房间列表
-  getRoomList: function (callback) {
-    var self = this;
-    webrtcroom.getRoomList(0, 20, function (res) {
-      console.log('拉取房间列表成功:', res);
-      if (res.data) {
-        self.setData({
-          roomList: res.data
-        });
+  async getRoomList() {
+    try {
+      let res = await webrtcroom.getRoomList(0, 20)
+
+      if (!res || res.code) {
+        throw new Error(res.errMsg)
       }
-    }, function (res) { });
+    
+      this.setData({
+        roomList: res.data
+      });
+    }
+    catch(e) {
+      wx.showToast({
+        title: '拉取房间列表失败，请重试',
+        icon: 'none'
+      })
+    }
   },
 
   // 创建房间，进入创建页面
-  create: function () {
-    var self = this;
+  create() {
     // 防止两次点击操作间隔太快
-    var nowTime = new Date();
+    let nowTime = new Date();
+
     if (nowTime - this.data.tapTime < 1000) {
       return;
     }
-    var url = '../join-room/index?type=createByName&roomName=' + self.data.roomName + '&userName=' + self.data.userName;
+
+    let url = `../join-room/index?type=createByID`
     wx.navigateTo({
       url: url
     });
-    self.setData({
+
+    this.setData({
       'tapTime': nowTime
     });
   },
 
-  // 进入webrtcroom页面
-  goRoom: function (e) {
+  // 进入 webrtcroom 页面
+  goToRoom(e) {
+    let dataset = e.currentTarget.dataset
     // 防止两次点击操作间隔太快
-    var nowTime = new Date();
+    let nowTime = new Date()
     if (nowTime - this.data.tapTime < 1000) {
-      return;
+      return
     }
 
-    var url = '../room/index?type=enter&roomID=' + e.currentTarget.dataset.roomid + '&roomName=' + e.currentTarget.dataset.roomname + '&roomCreator=' + e.currentTarget.dataset.roomcreator;
+    let url = `../room/index?roomID=${dataset.roomid}&roomCreator=${dataset.roomcreator}`
+
     if (!this.data.tapJoinRoom) { // 如果没有点击进入房间
       this.data.tapJoinRoom = true;
       wx.navigateTo({
@@ -60,63 +71,36 @@ Page({
         complete: () => {
           this.data.tapJoinRoom = false; // 不管成功还是失败，重置tapJoinRoom
         }
-      });
+      })
     }
+
     this.setData({
       'tapTime': nowTime
-    });
+    })
   },
-
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-  onLoad: function (options) {
-    this.getRoomList();
+  onLoad(options) {
+    this.getRoomList()
   },
 
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-  onReady: function () {
-    var self = this;
-    console.log(this.data);
-    var systemInfo = wx.getSystemInfoSync();
-    console.info('系统消息:', systemInfo);
-  },
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
+  /**
+   * 生命周期函数--监听页面显示
+   */
   onShow: function () {
-
+    setTimeout(() => {
+      this.getRoomList()
+    }, 2000)
   },
-
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
-  onHide: function () {
-
-  },
-
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
-  onUnload: function () { },
 
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
 	 */
   onPullDownRefresh: function () {
-    this.getRoomList(function () { });
-    wx.stopPullDownRefresh();
-  },
-
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
-  onReachBottom: function () {
-
+    this.getRoomList()
+    wx.stopPullDownRefresh()
   },
 
 	/**
@@ -124,10 +108,8 @@ Page({
 	 */
   onShareAppMessage: function () {
     return {
-      // title: '',
-      // path: '/pages/multiroom/roomlist/roomlist',
-      path: '/pages/main/main',
-      imageUrl: 'https://mc.qcloudimg.com/static/img/dacf9205fe088ec2fef6f0b781c92510/share.png'
+      title: '小程序·云开发音视频解决方案',
+      path: '/pages/index/index',
     }
   }
 })

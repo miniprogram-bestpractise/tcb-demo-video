@@ -4,7 +4,7 @@ const cloud = require('wx-server-sdk')
 cloud.init()
 
 const db = cloud.database()
-const roomsCollection = db.collection('webrtcRooms')
+const roomsCollection = db.collection('liveRooms')
 const _ = db.command
 
 
@@ -20,7 +20,7 @@ exports.main = async (event, context) => {
     .skip(event.skip || 0)
     .limit(event.limit || 10)
     .get()
-  
+
   response.data = data
 
   return response

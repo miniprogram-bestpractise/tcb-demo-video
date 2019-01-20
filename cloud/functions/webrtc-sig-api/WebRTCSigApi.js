@@ -130,19 +130,19 @@ function genSignContentForPrivateMapKey(json) {
 
 /**
  * 生成userSig 
- * @param string userid 用户名
- * @param uint sdkappid appid
+ * @param string userID 用户名
+ * @param uint sdkappID appid
  * @param uint accountType
  * @param string priKey 私钥
  * @param uint expire userSig有效期，出于安全考虑建议为300秒，您可以根据您的业务场景设置其他值。
  * @return string 生成的userSig
  */
-function genUserSig(userid, sdkappid, accountType, priKey, expire) {
+function genUserSig({ userID, sdkAppID, accountType, priKey, expire }) {
   let json = {
     'TLS.account_type': (accountType || '0').toString(),
-    'TLS.identifier': userid,
+    'TLS.identifier': userID,
     'TLS.appid_at_3rd': '0',
-    'TLS.sdk_appid': sdkappid.toString(),
+    'TLS.sdk_appid': sdkAppID.toString(),
     'TLS.expire_after': (expire || '300').toString(),
     'TLS.version': '201512300000',
     'TLS.time': Math.floor(Date.now() / 1000).toString()
@@ -163,27 +163,30 @@ function genUserSig(userid, sdkappid, accountType, priKey, expire) {
 
 /**
  * 生成privateMapKey
- * @param string userid 用户名
- * @param uint sdkappid appid
- * @param uint accountType accountType
- * @param uint roomid 房间号
- * @param string priKey 私钥
- * @param uint expire privateMapKey有效期，出于安全考虑建议为300秒，您可以根据您的业务场景设置其他值。
- * @return string 生成的privateMapKey
+ * @param Object params 参数
+ * 
+ * @param String params.userID 用户名
+ * @param Integer params.sdkAppID appid
+ * @param Integer params.ccountType accountType
+ * @param Integer params.roomid 房间号
+ * @param String params.priKey 私钥
+ * @param Integer params.expire privateMapKey有效期，出于安全考虑建议为300秒，可以根据您的业务场景设置其他值。
+ * 
+ * @return String 生成的privateMapKey
  */
-function genPrivateMapKey(userid, sdkappid, accountType, roomid, priKey, expire) {
+function genPrivateMapKey({ userID, sdkAppID, accountType, roomid, priKey, expire }) {
   //视频校验位需要用到的字段
   /*
       cVer    unsigned char/1 版本号，填0
       wAccountLen unsigned short /2   第三方自己的帐号长度
       buffAccount wAccountLen 第三方自己的帐号字符
-      dwSdkAppid  unsigned int/4  sdkappid
+      dwSdkAppid  unsigned int/4  sdkAppID
       dwAuthId    unsigned int/4  群组号码
       dwExpTime   unsigned int/4  过期时间 （当前时间 + 有效期（单位：秒，建议300秒））
       dwPrivilegeMap  unsigned int/4  权限位
       dwAccountType   unsigned int/4  第三方帐号类型
   */
-  let accountLength = userid.length;
+  let accountLength = userID.length;
   let time = Math.floor(Date.now() / 1000);
   let expiredTime = time + (expire || 300);
   let offset = 0;
@@ -198,14 +201,14 @@ function genPrivateMapKey(userid, sdkappid, accountType, roomid, priKey, expire)
 
   //buffAccount
   for (; offset < 3 + accountLength; ++offset) {
-    bytes[offset] = userid.charCodeAt(offset - 3);
+    bytes[offset] = userID.charCodeAt(offset - 3);
   }
 
   //dwSdkAppid
-  bytes[offset++] = (sdkappid & 0xFF000000) >> 24;
-  bytes[offset++] = (sdkappid & 0x00FF0000) >> 16;
-  bytes[offset++] = (sdkappid & 0x0000FF00) >> 8;
-  bytes[offset++] = sdkappid & 0x000000FF;
+  bytes[offset++] = (sdkAppID & 0xFF000000) >> 24;
+  bytes[offset++] = (sdkAppID & 0x00FF0000) >> 16;
+  bytes[offset++] = (sdkAppID & 0x0000FF00) >> 8;
+  bytes[offset++] = sdkAppID & 0x000000FF;
 
   //dwAuthId
   bytes[offset++] = (roomid & 0xFF000000) >> 24;
@@ -239,9 +242,9 @@ function genPrivateMapKey(userid, sdkappid, accountType, roomid, priKey, expire)
 
   let json = {
     'TLS.account_type': '0',
-    'TLS.identifier': userid,
+    'TLS.identifier': userID,
     'TLS.appid_at_3rd': '0',
-    'TLS.sdk_appid': sdkappid.toString(),
+    'TLS.sdk_appid': sdkAppID.toString(),
     'TLS.expire_after': (expire || 300).toString(),
     'TLS.version': '201512300000',
     'TLS.time': time.toString(),

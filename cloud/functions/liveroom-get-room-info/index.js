@@ -4,20 +4,21 @@ const cloud = require('wx-server-sdk')
 cloud.init()
 
 const db = cloud.database()
-const roomsCollection = db.collection('webrtcRooms')
+const liveRoomsCollection = db.collection('liveRooms')
 const _ = db.command
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+  const wxContext = cloud.getWXContext()
 
   let response = {
     code: 0,
     message: 'success',
-    data: null
+    data: {}
   }
 
   // 从数据库拉取房间信息
-  let result = await roomsCollection
+  let result = await liveRoomsCollection
     .where({
       roomID: event.roomID
     })
@@ -27,6 +28,12 @@ exports.main = async (event, context) => {
     response.data = result.data[0]
   }
 
+  if (response.data.creator === wxContext.OPENID) {
+    response.data.isCreator = true
+  }
+  else {
+    response.data.isCreator = false
+  }
+
   return response
-  
 }

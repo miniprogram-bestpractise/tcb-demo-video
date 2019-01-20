@@ -1,31 +1,25 @@
 <view class='container-box'>
   <view class="input-box">
-    <input class="{{type=='createByID'?'':'none'}}" value="{{roomNo}}" maxlength="20" bindinput='bindRoomNo' placeholder="请输入房间号" placeholder-style="color:#ffffff;opacity: 0.55;"/>
-    <input class="{{type=='createByName'?'':'none'}}" value="{{roomName}}" maxlength="20" bindinput='bindRoomName' placeholder="输入房间名称" placeholder-style="color:#ffffff;opacity: 0.55;"/>
-    <!-- <input value="{{roomNo}}" maxlength="20" bindinput='bindRoomNo' wx:placeholder="{{template}}" placeholder-style="color:#ffffff;opacity: 0.55;"/> -->
+    <input
+      value="{{roomNo}}"
+      maxlength="20"
+      bindinput='bindRoomNo'
+      placeholder="请输入房间号"
+      placeholder-style="color:#ffffff;opacity: 0.55;"
+    />
   </view>
+
   <radio-group class="radio-group" bindchange="radioChange">
     <label class="radio">
-      <radio color='#006eff' value="float" checked='true' id="float"/>嵌套布局
+      <radio color='#006eff' value="1v1bigsmall" checked='true' id="1v1bigsmall"/>大小布局
     </label>
     <label class="radio">
-      <radio color='#006eff' value="grid"  id="grid"/>网格布局
+      <radio color='#006eff' value="1v1horizontal"  id="1v1horizontal"/>水平布局
     </label>
   </radio-group>
-  <view class="PrevImgBox">
-    <view class="PrevCell">
-      <label for="float">
-        <image src="/pages/Resources/float-style.png" style="width:200rpx;height:228rpx" class="{{template==='float'?'selected':''}}"/>
-      </label>
-    </view>
-    <view class="PrevCell">
-      <label for="grid">
-        <image src="/pages/Resources/grid-style.png"  style="width:200rpx;height:228rpx" class="{{template==='grid'?'selected':''}}"/>
-      </label>
-    </view>
 
-  </view>
+  <view class='bottom-btn'> 
+    <button type="primary" bindtap="joinRoom" hover-class="none">进入房间</button>
+  </view> 
+
 </view>
-<view class='bottom-btn'> 
-  <button type="primary" bindtap="joinRoom" hover-class="none">进入房间</button>
-</view> 
