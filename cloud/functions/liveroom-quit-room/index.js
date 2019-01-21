@@ -47,13 +47,13 @@ exports.main = async (event, context) => {
     return response
   }
 
-  // 删除成员
-  deleteMember(roomInfo, wxContext.OPENID)
 
   if (roomInfo.members.length === 0 || roomInfo.creator === wxContext.OPENID) {
     // 成员为0，删除房间
     res = await roomsCollection.doc(roomInfo._id).remove()
   } else {
+    // 删除成员
+    deleteMember(roomInfo, wxContext.OPENID)
     // 更新房间成员
     res = await roomsCollection.doc(roomInfo._id).update({
       data: {
