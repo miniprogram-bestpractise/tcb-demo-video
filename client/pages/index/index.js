@@ -12,10 +12,10 @@ Page({
         id: 'live-room/room-list',
         name: '手机直播'
       },
-      {
-        id: 'functions',
-        name: '云函数调试'
-      }
+      // {
+      //   id: 'functions',
+      //   name: '云函数调试'
+      // }
     ]
   },
 

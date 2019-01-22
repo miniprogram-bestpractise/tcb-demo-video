@@ -22,7 +22,7 @@ Page({
       return;
     }
 
-    let url = '../join-room/index'
+    let url = '../create-room/index'
     wx.navigateTo({
       url: url
     })

@@ -5,7 +5,7 @@
     "pages/webrtc-room/join-room/index",
     "pages/webrtc-room/room/index",
     "pages/live-room/room-list/index",
-    "pages/live-room/join-room/index",
+    "pages/live-room/create-room/index",
     "pages/live-room/room/index",
     "pages/functions/index"
   ],

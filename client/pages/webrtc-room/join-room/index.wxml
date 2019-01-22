@@ -9,15 +9,6 @@
     />
   </view>
 
-  <radio-group class="radio-group" bindchange="radioChange">
-    <label class="radio">
-      <radio color='#006eff' value="1v1bigsmall" checked='true' id="1v1bigsmall"/>大小布局
-    </label>
-    <label class="radio">
-      <radio color='#006eff' value="1v1horizontal"  id="1v1horizontal"/>水平布局
-    </label>
-  </radio-group>
-
   <view class='bottom-btn'> 
     <button type="primary" bindtap="joinRoom" hover-class="none">进入房间</button>
   </view> 

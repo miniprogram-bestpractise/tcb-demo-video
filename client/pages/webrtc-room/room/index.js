@@ -195,7 +195,6 @@ Page({
       username: options.userName || '',
       roomID: options.roomID || '',
       roomCreator: options.roomCreator || this.data.userID,
-      template: options.template || this.data.template
     }, () => {
       this.joinRoom();
     });
