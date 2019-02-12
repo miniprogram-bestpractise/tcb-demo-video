@@ -5,7 +5,7 @@
     <view>请点击新建房间</view>
   </view>
 
-  <view wx:for="{{roomList}}" wx:key="{{key}}" class="list-box" bindtap="goToRoom" data-roomid="{{item.roomID}}" data-roomname="{{item.roomName}}" data-roomcreator="{{item.creator}}"> 
+  <view wx:for="{{roomList}}" wx:key="{{key}}" class="list-box" bindtap="goToRoom" data-roomid="{{item.roomID}}" data-roomname="{{item.roomName}}"> 
     <view>
         <view class='list-info'>房间名: {{item.roomName || '匿名'}}</view>
         <view class='list-info'>房间ID: {{item.roomID}}</view>

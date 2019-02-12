@@ -16,21 +16,9 @@ const liveroom = {
     return result
   },
 
-  async createRoom(roomName) {
-    let { result } = await wx.cloud.callFunction({
-      name: 'liveroom-create-room',
-      data: {
-        roomName
-      }
-    })
-
-    return result
-  },
-
   /**
    * 进入房间，默认userID使用openID， roomID如果不存在则随机生成，存在则进入房间
    * @param {Object} params - 
-   * @param {String=} params.userID - option, default openID
    * @param {String=} params.roomID - option
    * @param {String=} params.roomName - option
    */
@@ -56,18 +44,6 @@ const liveroom = {
 
     return result
   },
-
-  async getRoomInfo(roomID) {
-    let { result } = await wx.cloud.callFunction({
-      name: 'liveroom-get-room-info',
-      data: {
-        roomID
-      }
-    })
-
-    return result
-  }
-
 }
 
 module.exports = liveroom

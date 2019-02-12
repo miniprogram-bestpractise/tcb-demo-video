@@ -8,14 +8,29 @@ Page({
    * 页面的初始数据
    */
   data: {
-    roomName: '',   // 房间名称
-    userName: '',   // 用户名称
+    roomName: '',
+    roomID: '',
+    roomType: 'roomID',
     pureAudio: false,
     tapTime: '',    // 防止两次点击操作间隔太快
   },
 
-  // 绑定输入框
-  bindRoomName(e) {
+  // 选择输入房间号还是房间名
+  radioChange: function (e) {
+    this.setData({
+      roomType: e.detail.value
+    })
+  },
+
+  // 绑定输入房间号输入框
+  bindRoomID: function (e) {
+    this.setData({
+      roomID: e.detail.value
+    });
+  },
+
+  // 绑定输入房间名输入框
+  bindRoomName: function (e) {
     this.setData({
       roomName: e.detail.value
     });
@@ -35,49 +50,58 @@ Page({
 
   // 进入rtcroom页面
   async joinRoom() {
+    let {
+      roomType,
+      roomID,
+      roomName,
+      pureAudio,
+      tapTime,
+    } = this.data
     // 防止两次点击操作间隔太快
     let nowTime = new Date();
-    if (nowTime - this.data.tapTime < 1000) {
+    if (nowTime - tapTime < 1000) {
       return;
     }
 
-    if (/[<>*{}()^%$#@!~&= ]/.test(this.data.roomName)
-        || !this.data.roomName) {
-      wx.showModal({
-        title: '提示',
-        content: '名称不能为空或包含特殊字符',
-        showCancel: false
-      })
-      return
-    }
-
-    try {
-      let result = await liveroom.createRoom(this.data.roomName)
-      
-      if (!result || result.code) {
-        throw new Error(result.errMsg)
+    if (roomType === 'roomID') {
+      roomName = ''
+      if (!roomID) {
+        wx.showToast({
+          title: '请输入房间号',
+          icon: 'none',
+          duration: 2000
+        })
+        return
       }
 
-      let {
-        roomID,
-        roomName,
-        creator
-      } = result.data
-
-      let url = `../room/index?roomID=${roomID}&roomName=${roomName}&userName=${creator}&pureAudio=${this.data.pureAudio}`
-
-      wx.redirectTo({
-        url: url
-      })
-    
-      this.setData({ 'tapTime': nowTime });
+      if (/^\d\d+$/.test(roomID) === false) {
+        wx.showToast({
+          title: '只能为数字',
+          icon: 'none',
+          duration: 2000
+        })
+        return
+      }
     }
-    catch(e) {
-      wx.showToast({
-        title: '创建房间失败，请重试',
-        icon: 'none',
-      })
+    else {
+      roomID = ''
+      if (!roomName) {
+        wx.showToast({
+          title: '请输入房间名',
+          icon: 'none',
+          duration: 2000
+        })
+        return
+      }
     }
+
+    let url = `../room/index?roomID=${roomID}&roomName=${roomName}&pureAudio=${pureAudio}`
+
+    wx.navigateTo({
+      url: url
+    })
+
+    this.setData({ 'tapTime': nowTime })
   },
 
   /**

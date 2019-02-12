@@ -11,7 +11,9 @@ Page({
    */
   data: {
     liveAppID: '',
-    roomID: null,
+    roomID: '',
+    roomName: '',
+    userID: '',
     pushUrl: null,
     playUrl: null,
     orientation: 'vertical',
@@ -123,43 +125,49 @@ Page({
     console.log(e)
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  async onLoad(options) {
+  async joinRoom() {
+    
+    wx.showToast({
+      icon: 'none',
+      title: '房间初始化中'
+    });
+
     let {
       roomID,
-      streamID,
-      pureAudio,
-      userName
-    } = options
+      roomName
+    } = this.data
 
     try {
-      let result = await liveroom.getRoomInfo(roomID)
+      let res = await liveroom.enterRoom({
+        roomID,
+        roomName,
+      })
 
-      if (!result || result.code) {
-        throw new Error(result.errMsg)
+      if (!res || res.code) {
+        console.log(res)
+        throw new Error(res.errMsg)
       }
 
-      console.log(result)
+      console.log('进入房间', res)
 
       let {
-        liveAppID,
-        pushUrl,
-        playUrl,
-        isCreator,
-        roomName
-      } = result.data;
+        roomInfo = {}
+      } = res.data
+
+      console.log(roomInfo)
+
+      let isCreator = roomInfo.userID === roomInfo.creator
 
       this.setData({
-        liveAppID,
-        roomID,
-        pushUrl: isCreator ? pushUrl : null,
-        playUrl: isCreator ? null : playUrl[0],
+        roomID: roomInfo.roomID,
+        roomName: roomInfo.roomName,
+        userID: roomInfo.userID,
+        liveAppID: roomInfo.liveAppID,
+        pushUrl: isCreator ? roomInfo.pushUrl : null,
+        playUrl: isCreator ? null : roomInfo.playUrl[0],
         isPushShow: isCreator ? true : false,
         isPlayShow: isCreator ? false : true
       }, () => {
-
         if (isCreator) {
           let liveRoomPushComponent = plugin.instance.getLiveRoomPushInstance();
           liveRoomPushComponent.start()
@@ -171,16 +179,42 @@ Page({
 
         // 设置房间标题
         wx.setNavigationBarTitle({
-          title: `${roomName}`
+          title: `${roomInfo.roomName}`
         })
       })
     }
-    catch(e) {
-      wx.showToast({
-        title: '进入房间失败，请重试',
-        icon: 'none'
-      })
+    catch (e) {
+      console.error(e, '进入房间失败')
+      // this.bindRoomEvent({
+      //   detail: {
+      //     tag: 'error',
+      //     code: 20001,
+      //     detail: '进入房间失败'
+      //   }
+      // })
     }
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  async onLoad(options) {
+    console.log(options)
+    let {
+      roomID,
+      roomName,
+      pureAudio,
+    } = options
+
+    pureAudio = pureAudio === 'false' ? false : true
+
+    this.setData({
+      roomID,
+      roomName,
+      enableCamera: !pureAudio
+    }, async () => {
+      await this.joinRoom()
+    })
   },
 
   /**

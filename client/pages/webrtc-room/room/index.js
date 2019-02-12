@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-const regeneratorRuntime = require('../../../libs/runtime.js')
-const webrtcroom = require('../../../libs/webrtcroom')
+import regeneratorRuntime from '../../../libs/runtime.js'
+import TcbService from '../../../libs/tcb-service-js-sdk/index'
+let tcbService = new TcbService(wx.cloud)
 const app = getApp()
 const plugin = requirePlugin("webRtcRoomPlugin");
 
@@ -13,6 +14,7 @@ Page({
     aspect: '16:9',
     webrtcroomComponent: null,
     roomID: '', // 房间id
+    roomName: '',
     beauty: 5,
     muted: false,
     debug: false,
@@ -20,7 +22,6 @@ Page({
     userID: '',
     userSig: '',
     sdkAppID: '',
-    roomCreator: '',
     comment: [],
     autoplay: true,
     enableCamera: true,
@@ -128,13 +129,26 @@ Page({
     
     wx.showToast({
       icon: 'none',
-      title: '获取登录信息中'
+      title: '房间初始化中'
     });
 
+    let {
+      roomID,
+      roomName
+    } = this.data
+
     try {
-      let res = await webrtcroom.enterRoom({
-        userID: this.data.userID, 
-        roomID: this.data.roomID
+      // let res = await webrtcroom.enterRoom({
+      //   roomID,
+      //   roomName, 
+      // })
+      let res = await tcbService.callService({
+        service: 'video',
+        action: 'webrtcroom-enter-room',
+        data: {
+          roomID,
+          roomName
+        }
       })
 
       if (!res || res.code) {
@@ -150,6 +164,7 @@ Page({
 
       this.setData({
         roomID: roomInfo.roomID,
+        roomName: roomInfo.roomName,
         userID: signInfo.userID,
         userSig: signInfo.userSig,
         sdkAppID: signInfo.sdkAppID,
@@ -178,8 +193,18 @@ Page({
   },
 
   async quitRoom() {
-    let result = await webrtcroom.quitRoom(this.data.userID, this.data.roomID);
-    if (!result.code) {
+    // let res = await webrtcroom.quitRoom(this.data.userID, this.data.roomID);
+    
+    let res = await tcbService.callService({
+      service: 'video',
+      action: 'webrtcroom-quit-room',
+      data: {
+        userID: this.data.userID,
+        roomID: this.data.roomID
+      }
+    })
+  
+    if (!res.code) {
       wx.showToast({
         title: '退出房间成功',
         icon: 'none'
@@ -191,13 +216,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let {
+      roomID,
+      roomName
+    } = options
+
     this.setData({
-      username: options.userName || '',
-      roomID: options.roomID || '',
-      roomCreator: options.roomCreator || this.data.userID,
-    }, () => {
-      this.joinRoom();
-    });
+      roomID: roomID || '',
+      roomName: roomName || '',
+    }, async () => {
+      await this.joinRoom();
+    })
     
   },
 

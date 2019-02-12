@@ -6,7 +6,7 @@ const webrtcroom = {
   // 获取房间列表
   async getRoomList(index, count) {
     let { result } = await wx.cloud.callFunction({
-      name: 'webrtc-get-room-list',
+      name: 'webrtcroom-get-room-list',
       data: {
         skip: index,
         limit: count
@@ -14,19 +14,6 @@ const webrtcroom = {
     })
 
     return result
-  },
-
-  // 获取用户鉴权信息
-  async getLoginInfo(userID = null) {
-    let { result } = await wx.cloud.callFunction({
-      name: 'webrtc-sig-api',
-      data: {
-        userID
-      }
-    })
-
-    return result
-
   },
 
   /**
@@ -38,7 +25,7 @@ const webrtcroom = {
    */
   async enterRoom(params) {
     let { result } = await wx.cloud.callFunction({
-      name: 'webrtc-enter-room',
+      name: 'webrtcroom-enter-room',
       data: {
         ...params
       }
@@ -50,7 +37,7 @@ const webrtcroom = {
   // 退出房间
   async quitRoom(userID, roomID) {
     let { result } = await wx.cloud.callFunction({
-      name: 'webrtc-quit-room',
+      name: 'webrtcroom-quit-room',
       data: {
         roomID,
         userID

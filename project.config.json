@@ -30,14 +30,8 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 4,
 			"list": [
-				{
-					"id": 5,
-					"name": "音视频创建房间",
-					"pathName": "pages/webrtc-room/join-room/index",
-					"query": ""
-				},
 				{
 					"id": -1,
 					"name": "音视频房间列表",
@@ -54,6 +48,20 @@
 					"id": -1,
 					"name": "云函数调试",
 					"pathName": "pages/functions/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "视频客服创建房间",
+					"pathName": "pages/webrtc-room/join-room/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 4,
+					"name": "直播创建房间",
+					"pathName": "pages/live-room/join-room/index",
 					"query": "",
 					"scene": null
 				}

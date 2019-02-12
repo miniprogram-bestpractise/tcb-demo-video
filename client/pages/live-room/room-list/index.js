@@ -22,7 +22,7 @@ Page({
       return;
     }
 
-    let url = '../create-room/index'
+    let url = '../join-room/index'
     wx.navigateTo({
       url: url
     })
@@ -61,7 +61,7 @@ Page({
   goRoom(e) {
     let dataset = e.currentTarget.dataset
     console.log(dataset)
-    let url = `../room/index?roomID=${dataset.roomid}&roomName=${dataset.roomname}`
+    let url = `../room/index?roomID=${dataset.roomid}`
 
     wx.navigateTo({
       url: url

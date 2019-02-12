@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-const regeneratorRuntime = require('../../../libs/runtime.js')
-let webrtcroom = require('../../../libs/webrtcroom.js');
+import regeneratorRuntime from '../../../libs/runtime.js'
+import TcbService from '../../../libs/tcb-service-js-sdk/index'
+let tcbService = new TcbService(wx.cloud)
 
 Page({
 
@@ -16,7 +17,14 @@ Page({
   // 拉取房间列表
   async getRoomList() {
     try {
-      let res = await webrtcroom.getRoomList(0, 20)
+      let res = await tcbService.callService({
+        service: 'video',
+        action: 'webrtcroom-get-room-list',
+        data: {
+          skip: 0,
+          limit: 20
+        }
+      })
 
       if (!res || res.code) {
         throw new Error(res.errMsg)
@@ -62,7 +70,7 @@ Page({
       return
     }
 
-    let url = `../room/index?roomID=${dataset.roomid}&roomCreator=${dataset.roomcreator}`
+    let url = `../room/index?roomID=${dataset.roomid}`
 
     if (!this.data.tapJoinRoom) { // 如果没有点击进入房间
       this.data.tapJoinRoom = true;

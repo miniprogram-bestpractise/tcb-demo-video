@@ -4,56 +4,82 @@ Page({
 	 */
   data: {
     roomName: '',
-    roomNo: '',
-    tapTime: '',
-    template: '1v1bigsmall',
+    roomID: '',
+    roomType: 'roomID',
+    tapTime: ''
   },
 
-  // 绑定输房间号输入框
-  bindRoomNo: function (e) {
+  // 选择输入房间号还是房间名
+  radioChange: function (e) {
     this.setData({
-      roomNo: e.detail.value
+      roomType: e.detail.value
+    })
+  },
+
+  // 绑定输入房间号输入框
+  bindRoomID: function (e) {
+    this.setData({
+      roomID: e.detail.value
     });
   },
 
-  radioChange: function (e) {
-    // this.data.template = e.detail.value;
+  // 绑定输入房间名输入框
+  bindRoomName: function (e) {
     this.setData({
-      template: e.detail.value
-    })
-    console.log('this.data.template', this.data.template)
+      roomName: e.detail.value
+    });
   },
 
   // 进入rtcroom页面
   joinRoom() {
+    let {
+      roomType,
+      roomID,
+      roomName,
+      template,
+      tapTime,
+    } = this.data
     // 防止两次点击操作间隔太快
     let nowTime = new Date();
-    if (nowTime - this.data.tapTime < 1000) {
+    if (nowTime - tapTime < 1000) {
       return;
     }
     
-    if (!this.data.roomNo) {
-      wx.showToast({
-        title: '请输入房间号',
-        icon: 'none',
-        duration: 2000
-      })
-      return
-
+    if (roomType === 'roomID') {
+      roomName = ''
+      if (!roomID) {
+        wx.showToast({
+          title: '请输入房间号',
+          icon: 'none',
+          duration: 2000
+        })
+        return
+      }
+    
+      if (/^\d\d+$/.test(roomID) === false) {
+        wx.showToast({
+          title: '只能为数字',
+          icon: 'none',
+          duration: 2000
+        })
+        return
+      }
     }
-  
-    if (/^\d\d+$/.test(this.data.roomNo) === false) {
-      wx.showToast({
-        title: '只能为数字',
-        icon: 'none',
-        duration: 2000
-      })
-      return
+    else {
+      roomID = ''
+      if (!roomName) {
+        wx.showToast({
+          title: '请输入房间名',
+          icon: 'none',
+          duration: 2000
+        })
+        return
+      }
     }
 
-    let url = `../room/index?roomID=${this.data.roomNo}&roomName=${this.data.roomName}&template=${this.data.template}`
+    let url = `../room/index?roomID=${roomID}&roomName=${roomName}`
 
-    wx.navigateTo({
+    wx.redirectTo({
       url: url
     })
 

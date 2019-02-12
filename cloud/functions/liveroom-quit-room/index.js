@@ -5,7 +5,6 @@ cloud.init()
 
 const db = cloud.database()
 const roomsCollection = db.collection('liveRooms')
-const _ = db.command
 
 function deleteMember(roomInfo, userID) {
   let index = roomInfo.members.indexOf(userID)
@@ -18,8 +17,6 @@ function deleteMember(roomInfo, userID) {
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   // 退出房间，删除对应的members
-  // event.userID
-  // event.roomID
   let response = {
     code: 0,
     message: 'success',

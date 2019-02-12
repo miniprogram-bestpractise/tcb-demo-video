@@ -21,6 +21,16 @@
   text-align: center;
 }
 
+.radio-group {
+  text-align: center;
+  margin-top: 8vh;
+}
+.radio-group .radio {
+  margin: 0 6vw;
+  font-size: 14px;
+  color: #ffffff;
+}
+
 .video {
   position: absolute;
   width: 8vw;
