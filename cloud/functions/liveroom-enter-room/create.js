@@ -70,7 +70,6 @@ async function createRoom(cloud, { userID, roomID = '', roomName = '' }) {
 
   console.log('roomInfo', roomInfo, result)
 
-  roomInfo.userID = userID
   return roomInfo
 }
 

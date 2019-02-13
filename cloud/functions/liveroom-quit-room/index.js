@@ -6,6 +6,9 @@ cloud.init()
 const db = cloud.database()
 const roomsCollection = db.collection('liveRooms')
 
+const TcbService = require('tcb-service-sdk/dist/tcb-service-node-sdk')
+let tcbService = new TcbService(cloud)
+
 function deleteMember(roomInfo, userID) {
   let index = roomInfo.members.indexOf(userID)
   if (index > -1) {
@@ -28,12 +31,14 @@ exports.main = async (event, context) => {
     response.message = '请求失败，缺少参数'
     return response
   }
-  let { result } = await cloud.callFunction({
-    name: 'liveroom-get-room-info',
+  
+  let result = await tcbService.callService({
+    service: 'video',
+    action: 'liveroom-get-room-info',
     data: {
       roomID: event.roomID
     }
-  });
+  })
 
   let roomInfo = result.data
   let status = null

@@ -86,5 +86,7 @@ exports.main = async (event, context) => {
     }
   }
 
+  response.data.roomInfo.userID = userID
+
   return response
 }

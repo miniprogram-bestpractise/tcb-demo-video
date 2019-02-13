@@ -28,16 +28,6 @@
     </label>
   </radio-group>
 </view>
-<image class='video' src="../../Resources/{{pureAudio?'video':'video_press'}}.png" bindtap='tapVideo'></image>
-<view class='video-box' hidden='{{pureAudio}}'>
-<image src='../../Resources/tips.png'></image>
-<text>音视频推流</text>
-</view>
-<image class='audio' src="../../Resources/{{pureAudio?'pureAudio_press':'pureaudio'}}.png" bindtap='tapAudio'></image>
-<view class='audio-box'  hidden='{{!pureAudio}}'>
-<image src='../../Resources/tips.png'></image>
-<text>纯音频推流</text>
-</view> 
 <view class='bottom-btn'>
   <button type="primary" bindtap="joinRoom" hover-class="none">开始直播</button>
 </view>

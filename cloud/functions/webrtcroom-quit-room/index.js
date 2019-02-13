@@ -4,7 +4,10 @@ const cloud = require('wx-server-sdk')
 cloud.init()
 
 const db = cloud.database()
-const webrtcRoomsCollection = db.collection('webrtcRooms')
+const roomsCollection = db.collection('webrtcRooms')
+
+const TcbService = require('tcb-service-sdk/dist/tcb-service-node-sdk')
+let tcbService = new TcbService(cloud)
 
 function deleteMember(roomInfo, userID) {
   let index = roomInfo.members.indexOf(userID)
@@ -28,12 +31,14 @@ exports.main = async (event, context) => {
     response.message = '请求失败，缺少参数'
     return response
   }
-  let { result } = await cloud.callFunction({
-    name: 'webrtcroom-get-room-info',
+
+  let result = await tcbService.callService({
+    service: 'video',
+    action: 'webrtcroom-get-room-info',
     data: {
       roomID: event.roomID
     }
-  });
+  })
 
   let roomInfo = result.data
   let status = null
@@ -49,10 +54,10 @@ exports.main = async (event, context) => {
   
   if (roomInfo.members.length === 0) {
     // 成员为0，删除房间
-    status = await webrtcRoomsCollection.doc(roomInfo._id).remove()
+    status = await roomsCollection.doc(roomInfo._id).remove()
   } else {
     // 更新房间成员
-    status = await webrtcRoomsCollection.doc(roomInfo._id).update({
+    status = await roomsCollection.doc(roomInfo._id).update({
       data: {
         members: roomInfo.members
       }

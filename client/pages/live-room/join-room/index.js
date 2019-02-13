@@ -1,9 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-const regeneratorRuntime = require('../../../libs/runtime')
-const liveroom = require('../../../libs/liveroom')
-
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -11,7 +6,6 @@ Page({
     roomName: '',
     roomID: '',
     roomType: 'roomID',
-    pureAudio: false,
     tapTime: '',    // 防止两次点击操作间隔太快
   },
 
@@ -36,25 +30,12 @@ Page({
     });
   },
 
-  tapVideo() {
-    this.setData({
-      pureAudio: false
-    });
-  },
-
-  tapAudio() {
-    this.setData({
-      pureAudio: true
-    });
-  },
-
   // 进入rtcroom页面
-  async joinRoom() {
+  joinRoom() {
     let {
       roomType,
       roomID,
       roomName,
-      pureAudio,
       tapTime,
     } = this.data
     // 防止两次点击操作间隔太快
@@ -95,9 +76,9 @@ Page({
       }
     }
 
-    let url = `../room/index?roomID=${roomID}&roomName=${roomName}&pureAudio=${pureAudio}`
+    let url = `../room/index?roomID=${roomID}&roomName=${roomName}`
 
-    wx.navigateTo({
+    wx.redirectTo({
       url: url
     })
 

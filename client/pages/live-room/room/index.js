@@ -1,8 +1,8 @@
-// client/pages/live-room/room/index.js
 // eslint-disable-next-line no-unused-vars
-const regeneratorRuntime = require('../../../libs/runtime')
+import regeneratorRuntime from '../../../libs/runtime'
+import TcbService from '../../../libs/tcb-service-js-sdk/index'
+let tcbService = new TcbService(wx.cloud)
 let plugin = requirePlugin('liveRoomPlugin')
-const liveroom = require('../../../libs/liveroom')
 
 Page({
 
@@ -88,28 +88,16 @@ Page({
     });
   },
 
-  async getRoomInfo(roomID) {
-    try {
-      let { result } = await wx.cloud.callFunction({
-        name: 'liveroom-get-room-info',
-        data: {
-          roomID
-        }
-      })
-
-      return result
-    }
-    catch(e) {
-      return null
-    }
-
-    await liveroom.quitRoom(this.data.roomID)
-  },
-
   async quitRoom() {
-    let result = await liveroom.quitRoom(this.data.roomID)
+    let res = await tcbService.callService({
+      service: 'video',
+      action: 'liveroom-quit-room',
+      data: {
+        roomID: this.data.roomID
+      }
+    })
     
-    if (!result.code) {
+    if (!res.code) {
       wx.showToast({
         title: '退出房间成功',
         icon: 'none'
@@ -138,9 +126,13 @@ Page({
     } = this.data
 
     try {
-      let res = await liveroom.enterRoom({
-        roomID,
-        roomName,
+      let res = await tcbService.callService({
+        service: 'video',
+        action: 'liveroom-enter-room',
+        data: {
+          roomID,
+          roomName
+        }
       })
 
       if (!res || res.code) {
@@ -154,9 +146,9 @@ Page({
         roomInfo = {}
       } = res.data
 
-      console.log(roomInfo)
-
       let isCreator = roomInfo.userID === roomInfo.creator
+
+      console.log(isCreator)
 
       this.setData({
         roomID: roomInfo.roomID,
@@ -185,13 +177,10 @@ Page({
     }
     catch (e) {
       console.error(e, '进入房间失败')
-      // this.bindRoomEvent({
-      //   detail: {
-      //     tag: 'error',
-      //     code: 20001,
-      //     detail: '进入房间失败'
-      //   }
-      // })
+      wx.showToast({
+        icon: 'none',
+        title: '进入房间失败'
+      });
     }
   },
 
@@ -199,19 +188,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   async onLoad(options) {
-    console.log(options)
     let {
-      roomID,
-      roomName,
-      pureAudio,
+      roomID = '',
+      roomName = '',
     } = options
-
-    pureAudio = pureAudio === 'false' ? false : true
 
     this.setData({
       roomID,
       roomName,
-      enableCamera: !pureAudio
     }, async () => {
       await this.joinRoom()
     })

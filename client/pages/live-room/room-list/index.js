@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-const regeneratorRuntime = require('../../../libs/runtime')
-const liveroom = require('../../../libs/liveroom')
+import regeneratorRuntime from '../../../libs/runtime'
+import TcbService from '../../../libs/tcb-service-js-sdk/index'
+let tcbService = new TcbService(wx.cloud)
 
 Page({
 
@@ -8,7 +9,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    roomList: []
+    roomList: [],
+    tapTime: '',
+    tapJoinRoom: false
   },
 
   /**
@@ -35,14 +38,21 @@ Page({
    */
   async getRoomList() {
     try {
-      let result = await liveroom.getRoomList()
+      let res = await tcbService.callService({
+        service: 'video',
+        action: 'liveroom-get-room-list',
+        data: {
+          skip: 0,
+          limit: 20
+        }
+      })
 
-      if (!result || result.code) {
-        throw new Error(result.errMsg)
+      if (!res || res.code) {
+        throw new Error(res.errMsg)
       }
 
       this.setData({
-        roomList: result.data
+        roomList: res.data
       })
 
     }
@@ -58,13 +68,28 @@ Page({
   /**
    * 进入房间
    */
-  goRoom(e) {
+  goToRoom(e) {
     let dataset = e.currentTarget.dataset
-    console.log(dataset)
+    // 防止两次点击操作间隔太快
+    let nowTime = new Date()
+    if (nowTime - this.data.tapTime < 1000) {
+      return
+    }
+
     let url = `../room/index?roomID=${dataset.roomid}`
 
-    wx.navigateTo({
-      url: url
+    if (!this.data.tapJoinRoom) { // 如果没有点击进入房间
+      this.data.tapJoinRoom = true;
+      wx.navigateTo({
+        url: url,
+        complete: () => {
+          this.data.tapJoinRoom = false; // 不管成功还是失败，重置tapJoinRoom
+        }
+      })
+    }
+
+    this.setData({
+      'tapTime': nowTime
     })
   },
 
