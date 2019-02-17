@@ -1,7 +1,7 @@
 {
-  "name": "mp-book-demo-basic",
+  "name": "tcb-demo-video",
   "version": "0.0.1",
-  "description": "basic demo for miniprogram cloud base",
+  "description": "video demo for miniprogram cloud base",
   "main": ".eslint.js",
   "scripts": {
     "lint": "eslint --init",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TencentCloudBase/mp-book-demo-basic.git"
+    "url": "git+https://github.com/TencentCloudBase/tcb-demo-video.git"
   },
   "keywords": [
     "tencent",
@@ -19,9 +19,9 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TencentCloudBase/mp-book-demo-basic/issues"
+    "url": "https://github.com/TencentCloudBase/tcb-demo-video/issues"
   },
-  "homepage": "https://github.com/TencentCloudBase/mp-book-demo-basic#readme",
+  "homepage": "https://github.com/TencentCloudBase/tcb-demo-video#readme",
   "devDependencies": {
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
