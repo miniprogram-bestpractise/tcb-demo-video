@@ -1,5 +1,5 @@
 {
-  "name": "webrtc-get-room-list",
+  "name": "webrtcroom-get-room-list",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

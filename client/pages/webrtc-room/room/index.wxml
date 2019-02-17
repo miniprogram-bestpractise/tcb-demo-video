@@ -32,28 +32,28 @@
           <cover-view class='img-box'>
             <cover-image
               class='img-view'
-              src='/pages/Resources/camera{{frontCamera?"":"-gray"}}.png'
+              src='/pages/resources/camera{{frontCamera?"":"-gray"}}.png'
               bindtap="changeCamera"
             ></cover-image>
           </cover-view>
           <cover-view class='img-box'>
             <cover-image
               class='img-view'
-              src='/pages/Resources/{{beauty > 0? "beauty" : "beauty-dis"}}.png' 
+              src='/pages/resources/{{beauty > 0? "beauty" : "beauty-dis"}}.png' 
               bindtap="setBeauty"
             ></cover-image>
           </cover-view>
           <cover-view class='img-box'>
             <cover-image
               class='img-view'
-              src='/pages/Resources/{{muted ? "mic-dis" : "mic"}}.png' 
+              src='/pages/resources/{{muted ? "mic-dis" : "mic"}}.png' 
               bindtap="changeMute"
             ></cover-image>
           </cover-view>
           <cover-view class='img-box'>
             <cover-image
               class='img-view' 
-              src='/pages/Resources/{{debug? "log" : "log2"}}.png' 
+              src='/pages/resources/{{debug? "log" : "log2"}}.png' 
               bindtap="showLog"></cover-image>
           </cover-view>
         </cover-view>
@@ -66,28 +66,28 @@
         <cover-view class="operate">
           <cover-view class='img-box'>
             <cover-image class='img-view' 
-              src='/pages/Resources/camera{{frontCamera?"":"-gray"}}.png' 
+              src='/pages/resources/camera{{frontCamera?"":"-gray"}}.png' 
               bindtap="changeCamera"
             ></cover-image>
           </cover-view>
           <cover-view class='img-box'>
             <cover-image 
               class='img-view' 
-              src='/pages/Resources/{{beauty > 0? "beauty" : "beauty-dis"}}.png' 
+              src='/pages/resources/{{beauty > 0? "beauty" : "beauty-dis"}}.png' 
               bindtap="setBeauty"
             ></cover-image>
           </cover-view>
           <cover-view class='img-box'>
             <cover-image
               class='img-view' 
-              src='/pages/Resources/{{muted ? "mic-dis" : "mic"}}.png' 
+              src='/pages/resources/{{muted ? "mic-dis" : "mic"}}.png' 
               bindtap="changeMute"
             ></cover-image>
           </cover-view>
           <cover-view class='img-box'>
             <cover-image 
               class='img-view' 
-              src='/pages/Resources/{{debug? "log" : "log2"}}.png' 
+              src='/pages/resources/{{debug? "log" : "log2"}}.png' 
               bindtap="showLog"
             ></cover-image>
           </cover-view>

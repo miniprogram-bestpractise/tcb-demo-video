@@ -73,218 +73,18 @@ var Base = (function () {
     return Base;
 }());
 
-var AI = (function (_super) {
-    __extends(AI, _super);
-    function AI() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    AI.prototype.init = function () {
-        switch (this.action) {
-            case 'FaceFusion':
-                return;
-            case 'DetectAuth':
-                return;
-            case 'GetActionSequence':
-                return;
-            case 'GetLiveCode':
-                return;
-            case 'ImageRecognition':
-                return;
-            case 'LivenessCompare':
-                return;
-            case 'LivenessRecognition':
-                return;
-            case 'GetDetectInf':
-                return;
-        }
-    };
-    AI.prototype.FaceFusion = function () {
-    };
-    AI.prototype.DetectAuth = function () {
-    };
-    return AI;
-}(Base));
-
 var Video = (function (_super) {
     __extends(Video, _super);
     function Video() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Video.prototype.init = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        result = null;
-                        _a = this.action;
-                        switch (_a) {
-                            case 'liveroom-enter-room': return [3, 1];
-                            case 'liveroom-quit-room': return [3, 3];
-                            case 'liveroom-get-room-list': return [3, 5];
-                            case 'liveroom-get-room-info': return [3, 7];
-                            case 'webrtcroom-enter-room': return [3, 9];
-                            case 'webrtcroom-quit-room': return [3, 11];
-                            case 'webrtcroom-get-room-list': return [3, 13];
-                            case 'webrtcroom-get-room-info': return [3, 15];
-                        }
-                        return [3, 17];
-                    case 1: return [4, this.liveRoomEnterRoom()];
-                    case 2:
-                        result = _b.sent();
-                        return [3, 17];
-                    case 3: return [4, this.liveRoomQuitRoom()];
-                    case 4:
-                        result = _b.sent();
-                        return [3, 17];
-                    case 5: return [4, this.liveRoomGetRoomList()];
-                    case 6:
-                        result = _b.sent();
-                        return [3, 17];
-                    case 7: return [4, this.liveRoomGetRoomInfo()];
-                    case 8:
-                        result = _b.sent();
-                        return [3, 17];
-                    case 9: return [4, this.webRTCRoomEnterRoom()];
-                    case 10:
-                        result = _b.sent();
-                        return [3, 17];
-                    case 11: return [4, this.webRTCRoomQuitRoom()];
-                    case 12:
-                        result = _b.sent();
-                        return [3, 17];
-                    case 13: return [4, this.webRTCRoomGetRoomList()];
-                    case 14:
-                        result = _b.sent();
-                        return [3, 17];
-                    case 15: return [4, this.webRTCRoomGetRoomInfo()];
-                    case 16:
-                        result = _b.sent();
-                        return [3, 17];
-                    case 17: return [2, result];
-                }
-            });
-        });
-    };
-    Video.prototype.liveRoomEnterRoom = function () {
-        return __awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, Promise, function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4, this.cloud.callFunction({
-                            name: 'liveroom-enter-room',
-                            data: this.data
-                        })];
-                    case 1:
-                        result = (_a.sent()).result;
-                        return [2, result];
-                }
-            });
-        });
-    };
-    Video.prototype.liveRoomQuitRoom = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, this.cloud.callFunction({
-                            name: 'liveroom-quit-room',
-                            data: this.data
-                        })];
-                    case 1:
-                        result = (_a.sent()).result;
-                        return [2, result];
-                }
-            });
-        });
-    };
-    Video.prototype.liveRoomGetRoomList = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, this.cloud.callFunction({
-                            name: 'liveroom-get-room-list',
-                            data: this.data
-                        })];
-                    case 1:
-                        result = (_a.sent()).result;
-                        return [2, result];
-                }
-            });
-        });
-    };
-    Video.prototype.liveRoomGetRoomInfo = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, this.cloud.callFunction({
-                            name: 'liveroom-get-room-info',
-                            data: this.data
-                        })];
-                    case 1:
-                        result = (_a.sent()).result;
-                        return [2, result];
-                }
-            });
-        });
-    };
-    Video.prototype.webRTCRoomEnterRoom = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, this.cloud.callFunction({
-                            name: 'webrtcroom-enter-room',
-                            data: this.data
-                        })];
-                    case 1:
-                        result = (_a.sent()).result;
-                        return [2, result];
-                }
-            });
-        });
-    };
-    Video.prototype.webRTCRoomQuitRoom = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, this.cloud.callFunction({
-                            name: 'webrtcroom-quit-room',
-                            data: this.data
-                        })];
-                    case 1:
-                        result = (_a.sent()).result;
-                        return [2, result];
-                }
-            });
-        });
-    };
-    Video.prototype.webRTCRoomGetRoomList = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, this.cloud.callFunction({
-                            name: 'webrtcroom-get-room-list',
-                            data: this.data
-                        })];
-                    case 1:
-                        result = (_a.sent()).result;
-                        return [2, result];
-                }
-            });
-        });
-    };
-    Video.prototype.webRTCRoomGetRoomInfo = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, this.cloud.callFunction({
-                            name: 'webrtcroom-get-room-info',
+                            name: this.action,
                             data: this.data
                         })];
                     case 1:
@@ -297,6 +97,30 @@ var Video = (function (_super) {
     return Video;
 }(Base));
 
+var Sms = (function (_super) {
+    __extends(Sms, _super);
+    function Sms() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Sms.prototype.init = function () {
+        return __awaiter(this, void 0, Promise, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, this.cloud.callFunction({
+                            name: this.action,
+                            data: this.data
+                        })];
+                    case 1:
+                        result = (_a.sent()).result;
+                        return [2, result];
+                }
+            });
+        });
+    };
+    return Sms;
+}(Base));
+
 var TcbService = (function () {
     function TcbService(cloud) {
         this.cloud = cloud;
@@ -304,13 +128,13 @@ var TcbService = (function () {
     TcbService.prototype.callService = function (_a) {
         var service = _a.service, action = _a.action, data = _a.data;
         switch (service) {
-            case 'ai': {
-                var ai = new AI(this.cloud, action, data);
-                return ai.init();
-            }
             case 'video': {
                 var video = new Video(this.cloud, action, data);
                 return video.init();
+            }
+            case 'sms': {
+                var sms = new Sms(this.cloud, action, data);
+                return sms.init();
             }
         }
     };
