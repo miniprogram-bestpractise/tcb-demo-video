@@ -4,6 +4,12 @@
 - 教程在：[小程序·云开发系列教程](https://github.com/TencentCloudBase/mp-book)
 - 打开的时候记得填写 `project.config.json` 中的 `appid` 字段，其它功能的试用，请参考教程里的[小程序中级场景及开发教学](https://github.com/TencentCloudBase/mp-book/blob/master/medium-tutorial/video.md) 进行配置试用。
 
+## 图片预览
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/3348398/52934987-0cd4ea00-3393-11e9-90c9-0e10d990e05a.png" width="500px">
+</p>
+
 ## 体验
 
 <p align="center">
