@@ -7,7 +7,7 @@
 ## 图片预览
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/3348398/52934987-0cd4ea00-3393-11e9-90c9-0e10d990e05a.png" width="500px">
+    <img src="https://user-images.githubusercontent.com/3348398/52934987-0cd4ea00-3393-11e9-90c9-0e10d990e05a.png" width="1000px">
 </p>
 
 ## 体验
